@@ -1,6 +1,6 @@
 println("Starting simulation...")
 
-# Constants from the paper
+#Givens
 mu_G = 7.802e-5
 mu_E = 2.523e-5
 
@@ -10,17 +10,20 @@ v_y = 0.0
 x = 0.9992
 y = 0.0
 
-# Corrected Lagrange point calculations
-x_E = 1.020449653771479  # Europa L1 position from paper
+#Calculated through L1 Calculations
+x_E = 1.020449653771479 
 
+#Partial derivative of the potential with respect to x
 function omega_derivative_x(x, y, mu)
     return x-(((1-mu)*(x+mu))/((mu+x)^2+y^2)^(3/2))-((mu*(x-mu-1))/(y^2+(-1-mu+x)^2)^(3/2))
 end
 
+#Partial derivative of the potential with respect to y
 function omega_derivative_y(x, y, mu)
     return y-((y*(1-mu))/((mu+x)^2+y^2)^(3/2))-((mu*y)/(y^2+(-1-mu+x)^2)^(3/2))
 end
 
+#Runge-Kutta method to find velocity and position over time. 
 function runge_kutta(v_x, v_y, x, y, mu, delta_t)
     k1x = omega_derivative_x(x, y, mu) + 2 * v_y
     k1y = omega_derivative_y(x, y, mu) - 2 * v_x
